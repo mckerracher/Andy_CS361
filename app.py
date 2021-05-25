@@ -20,6 +20,7 @@ import os
 import requests
 import os.path
 import matplotlib
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import requests
@@ -38,12 +39,14 @@ from PIL import Image
 from io import BytesIO
 import webbrowser
 import PIL.Image
+
 data = 'foo'
 
-#application flask run
+# application flask run
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 app.config['SECRET_KEY'] = 'oTv!5ox8LB#A&@cBHpa@onsKU'
+
 
 def random_color_func(word=None, font_size=None, position=None, orientation=None, font_path=None, random_state=None):
     h = int(360.0 * 45.0 / 255.0)
@@ -55,7 +58,7 @@ def random_color_func(word=None, font_size=None, position=None, orientation=None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    #flash('in the index')
+    # flash('in the index')
     try:
         f = open('game.json')
         f.close()
@@ -64,31 +67,37 @@ def index():
     print('File is accessible')
     return render_template('index.html')
 
-#this needs to be the landing page for the word cloud- this is where the user hits the "submit" button
+
+# this needs to be the landing page for the word cloud- this is where the user hits the "submit" button
 @app.route("/wordcloud", methods=['POST', 'GET'])
 def wordcloud():
     flash('Welcome!')
     return render_template('wordcloud.html')
 
+
 r = ""
 counter = 0
+
 
 @app.route("/resetCount")
 def resetCount(wordCountRuns):
     wordCountRuns = 0
-    return(wordCountRuns)
+    return (wordCountRuns)
+
 
 def increment(counter):
     counter = counter + 1
     print(counter)
-    return(counter)
+    return (counter)
+
 
 # accessing web scraper data service
 @app.route("/getValerie", methods=['POST', 'GET'])
 def getValerie():
-    #update the following web address to whatever team members web address will be
+    # update the following web address to whatever team members web address will be
     r = requests.get("http://127.0.0.4:80/wordcloud")
-    return(r)
+    return (r)
+
 
 # loads after submit button pressed, creates word cloud
 @app.route("/wordcloud2", methods=['POST', 'GET'])
@@ -96,7 +105,7 @@ def wordcloud2():
     # verify that json data available from website scraper
     try:
         requests.get('http://valchin.com/sendjson2021')
-    #when error happens then flashing this error will be helpful
+    # when error happens then flashing this error will be helpful
     except IOError:
         print('File is not accessible')
         flash('Files not found or readable.')
@@ -110,7 +119,7 @@ def wordcloud2():
     print(file_content)
     print('File data above this line')
 
-    #this section generates the word cloud
+    # this section generates the word cloud
     wordcloud = WordCloud(
         stopwords=STOPWORDS,
         background_color='white',
@@ -124,10 +133,11 @@ def wordcloud2():
     # saves picture file to picture format
     plt.savefig('static/wordCloud.png')
     print("wordCloud.png created")
-    #increment(counter)
-    #print(counter)
+    # increment(counter)
+    # print(counter)
     flash('Success! Word Cloud has been processed and is loading')
     return render_template('wordcloud2.html')
+
 
 # this is the only word cloud get method that works
 @app.route('/wordcloud66', methods=['POST', 'GET'])
@@ -135,7 +145,7 @@ def wordcloudGet66():
     # verify that json data available from website scraper
     try:
         requests.get('http://valchin.com/sendjson2021')
-    #when error happens then flashing this error will be helpful
+    # when error happens then flashing this error will be helpful
     except IOError:
         print('File is not accessible')
         flash('Files not found or readable.')
@@ -149,7 +159,7 @@ def wordcloudGet66():
     print(file_content)
     print('File data above this line')
 
-    #this section generates the word cloud
+    # this section generates the word cloud
     wordcloud = WordCloud(
         stopwords=STOPWORDS,
         background_color='white',
@@ -173,23 +183,24 @@ def wordcloudGet66():
         print('file content created')
 
         print('checking if file can be written')
-        #image decoding from recent encoding - this is to prove that
-        #encoded string will actually return back to the original picture
+        # image decoding from recent encoding - this is to prove that
+        # encoded string will actually return back to the original picture
         newImage = Image.open(BytesIO(base64.b64decode(encoded_string)))
         print('Encoding completed')
 
-        #image is successfully printed to static folder proving that data can be decoded
+        # image is successfully printed to static folder proving that data can be decoded
         newImage.save('static/noob.png', 'PNG')
         print('PNG created')
 
         return (encoded_string)
+
 
 # get request for static PNG - does not generate new image
 @app.route('/wordcloud67', methods=['POST', 'GET'])
 def wordcloudGet67():
     try:
         requests.get('http://valchin.com/sendjson2021')
-    #when error happens then flashing this error will be helpful
+    # when error happens then flashing this error will be helpful
     except IOError:
         print('File is not accessible')
         flash('picture file not found')
@@ -203,21 +214,23 @@ def wordcloudGet67():
         print('file content created')
 
         print('checking if file can be written')
-        #image decoding from recent encoding - this is to prove that
-        #encoded string will actually return back to the original picture
+        # image decoding from recent encoding - this is to prove that
+        # encoded string will actually return back to the original picture
         newImage = Image.open(BytesIO(base64.b64decode(encoded_string)))
         print('Encoding completed')
 
         print("test")
-        #image is successfully printed to static folder proving that data can be decoded
+        # image is successfully printed to static folder proving that data can be decoded
         newImage.save('static/noob.png', 'PNG')
         print('PNG created')
 
         return (encoded_string)
 
+
 @app.route("/")
 def main():
     return data
+
 
 if __name__ == "__main__":
     threading.Thread(target=app.run).start()

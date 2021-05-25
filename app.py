@@ -1,17 +1,3 @@
-"""
-from flask import Flask
-
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
-if __name__ == '__main__':
-    app.run()
-"""
 # https://stackoverflow.com/questions/25149493/how-to-call-another-webservice-api-from-flask
 # https://thispointer.com/python-three-ways-to-check-if-a-file-is-empty/
 # https://www.geeksforgeeks.org/how-to-create-a-pop-up-message-when-a-button-is-pressed-in-python-tkinter/

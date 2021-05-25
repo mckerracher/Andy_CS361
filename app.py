@@ -124,8 +124,8 @@ def wordcloud2():
     # saves picture file to picture format
     plt.savefig('static/wordCloud.png')
     print("wordCloud.png created")
-    increment(counter)
-    print(counter)
+    #increment(counter)
+    #print(counter)
     flash('Success! Word Cloud has been processed and is loading')
     return render_template('wordcloud2.html')
 
